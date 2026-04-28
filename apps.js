@@ -1,57 +1,52 @@
 const actividades = [
-    "Programacion",
-    "Redes",
-    "Ofimatica"
+    "Fútbol",
+    "Baloncesto",
+    "Natación",
+    "Programación",
+    "Tenis"
 ];
-
-const selectActividad = document.getElementById("actividad");
+const actividad = document.getElementById("actividad");
 const form = document.getElementById("formActividad");
 const tabla = document.getElementById("tablaInscripciones");
-
+const buscador = document.getElementById("buscador");
 let inscripciones = [];
-let indiceEditar = null;
-
-actividades.forEach(actividad => {
+actividades.forEach(item => {
     const option = document.createElement("option");
-    option.value = actividad;
-    option.textContent = actividad;
-    selectActividad.appendChild(option);
+    option.value = item;
+    option.textContent = item;
+    actividad.appendChild(option);
 });
-
-form.addEventListener("submit", function(e) {
+form.addEventListener("submit", e => {
     e.preventDefault();
-
-    const nombre = document.getElementById("nombre").value;
-    const actividad = selectActividad.value;
-    const turno = document.querySelector('input[name="turno"]:checked').value;
-
-    const nuevaInscripcion = { nombre, actividad, turno };
-
-    if (indiceEditar === null) {
-        inscripciones.push(nuevaInscripcion);
-    } else {
-        inscripciones[indiceEditar] = nuevaInscripcion;
-        indiceEditar = null;
-    }
-
+    const nueva = {
+        nombre: document.getElementById("nombre").value,
+        actividad: actividad.value,
+        turno: document.querySelector('input[name="turno"]:checked').value
+    };
+    inscripciones.push(nueva);
+    mostrar();
     form.reset();
-    renderTabla();
 });
-
-function renderTabla() {
+function mostrar(){
     tabla.innerHTML = "";
-
-    inscripciones.forEach((inscripcion, index) => {
+    inscripciones.forEach((item, index) => {
         tabla.innerHTML += `
+     
             <tr>
-                <td>${inscripcion.nombre}</td>
-                <td>${inscripcion.actividad}</td>
-                <td>${inscripcion.turno}</td>
+                <td>${item.nombre}</td>
+                <td>${item.actividad}</td>
                 <td>
-                    <button class="btn btn-warning btn-sm me-2" onclick="editarInscripcion(${index})">
+                    <span class="badge bg-${item.turno == "Mañana" ? "warning text-dark" : "info text-dark"}">
+                        ${item.turno}
+                    </span>
+                </td>
+                <td>
+                    <button class="btn-editar"
+                        onclick="editar(${index})">
                         Editar
                     </button>
-                    <button class="btn btn-danger btn-sm" onclick="eliminarInscripcion(${index})">
+                    <button class="btn-eliminar"
+                        onclick="eliminar(${index})">
                         Eliminar
                     </button>
                 </td>
@@ -59,21 +54,26 @@ function renderTabla() {
         `;
     });
 }
-
-function eliminarInscripcion(index) {
-    inscripciones.splice(index, 1);
-    renderTabla();
+function eliminar(index){
+    inscripciones.splice(index,1);
+    mostrar();
 }
-
-function editarInscripcion(index) {
-    const inscripcion = inscripciones[index];
-
-    document.getElementById("nombre").value = inscripcion.nombre;
-    selectActividad.value = inscripcion.actividad;
-
-    document.querySelector(
-        `input[name="turno"][value="${inscripcion.turno}"]`
-    ).checked = true;
-
-    indiceEditar = index;
+function editar(index){
+    const item = inscripciones[index];
+    document.getElementById("nombre").value = item.nombre;
+    actividad.value = item.actividad;
+    item.turno == "Mañana"
+        ? document.getElementById("manana").checked = true
+        : document.getElementById("tarde").checked = true;
+    eliminar(index);
 }
+buscador.addEventListener("keyup", () => {
+    const texto = buscador.value.toLowerCase();
+    const filas = document.querySelectorAll("#tablaInscripciones tr");
+    filas.forEach(fila => {
+        fila.style.display =
+            fila.textContent.toLowerCase().includes(texto)
+            ? ""
+            : "none";
+    });
+});
