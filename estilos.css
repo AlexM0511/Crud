@@ -1,0 +1,79 @@
+body{
+    background:#eef2f7;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.card{
+    border:none;
+    border-radius:15px;
+    overflow:hidden;
+}
+
+.card-body{
+    padding:30px;
+}
+
+.form-label{
+    font-weight:600;
+    color:#374151;
+}
+
+.form-control,
+.form-select{
+    border-radius:10px;
+    padding:10px;
+    border:1px solid #cbd5e1;
+}
+
+.form-control:focus,
+.form-select:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 5px rgba(37,99,235,.3);
+}
+
+.btn-outline-primary{
+    border-radius:10px;
+}
+
+.btn-success{
+    background:#0f766e;
+    border:none;
+    border-radius:10px;
+}
+
+.btn-success:hover{
+    background:#115e59;
+}
+
+.table-dark{
+    background:#0f172a;
+}
+
+tbody tr:hover{
+    background:#f1f5f9;
+}
+
+.btn-editar{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:6px 10px;
+    border-radius:8px;
+    margin-right:5px;
+}
+
+.btn-eliminar{
+    background:#dc2626;
+    color:white;
+    border:none;
+    padding:6px 10px;
+    border-radius:8px;
+}
+
+@media(max-width:768px){
+
+    .card-body{
+        padding:20px;
+    }
+
+}
